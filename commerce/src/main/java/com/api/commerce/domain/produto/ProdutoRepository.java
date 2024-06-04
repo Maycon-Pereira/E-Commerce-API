@@ -1,4 +1,4 @@
-package com.api.commerce.domain.usuario;
+package com.api.commerce.domain.produto;
 
 import java.util.Optional;
 
@@ -7,11 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
-	Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
+public interface ProdutoRepository extends JpaRepository<Produto, Long>{
+	Page<Produto> findAllByAtivoTrue(Pageable paginacao);
 
-	Optional<Usuario> findById(String id);
-	
-	
+	Optional<Produto> findById(String id);
 
 }

@@ -1,6 +1,6 @@
 create table usuarios (
 
-    id bigint not null auto_increment,
+    id char(100) not null,
     username varchar(255) not null,
     user_password varchar(255) not null,
     email varchar(255) not null unique,
