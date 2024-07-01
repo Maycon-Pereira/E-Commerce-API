@@ -5,10 +5,12 @@ import java.util.UUID;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.api.commerce.domain.produto.DadosAtualizacaoProduto;
 import com.api.commerce.domain.produto.DadosCadastroProduto;
@@ -102,5 +104,23 @@ public class ProdutoService {
         Produto produto = procurado.get();
         return new DadosDetalhamentoProduto(produto);
 	}
+
+	//IMAGEM UPLOAD E DOWNLOAD
+		public void upload(MultipartFile file, String id) throws Exception {
+			Optional<Produto> procurado = produtoRepository.findById(id);
+
+		    if (!procurado.isPresent()) {
+		        throw new RuntimeException("Usuario não encontrado");
+		    }
+		    Produto produto = procurado.get();
+
+		    // Convertendo o arquivo para uma string Base64
+		    byte[] imagemBytes = file.getBytes();
+		    String imagemBase64 = Base64.encodeBase64String(imagemBytes);
+		    produto.setImagem(imagemBase64);
+
+		    // Salvando a entidade Usuario com a imagem em Base64
+		    produtoRepository.save(produto);
+		}	
 
 }

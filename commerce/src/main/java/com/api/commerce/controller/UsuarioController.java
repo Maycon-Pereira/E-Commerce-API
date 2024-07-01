@@ -1,7 +1,5 @@
 package com.api.commerce.controller;
 
-import java.util.List;
-
 import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,6 @@ import com.api.commerce.domain.usuario.DadosAtualizacaoUsuario;
 import com.api.commerce.domain.usuario.DadosCadastarUsuario;
 import com.api.commerce.domain.usuario.DadosDetalhamentoUsuario;
 import com.api.commerce.domain.usuario.DadosListagemUsuario;
-import com.api.commerce.entity.Usuario;
 import com.api.commerce.service.UsuarioService;
 
 import jakarta.transaction.Transactional;
@@ -94,9 +91,5 @@ public class UsuarioController {
         usuarioService.upload(imagem, id);
     }
 
-    @GetMapping("/download-imagem")
-    public List<Usuario> downloadImagens() {
-        return usuarioService.download();
-    }
 	
 }

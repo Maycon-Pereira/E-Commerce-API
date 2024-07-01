@@ -1,7 +1,6 @@
 package com.api.commerce.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -113,10 +112,6 @@ public class UsuarioService {
 
 		    // Salvando a entidade Usuario com a imagem em Base64
 		    usuarioRepository.save(usuario);
-		}
-
-		public List<Usuario> download() {
-		    return usuarioRepository.findAll();
-		}
+		}	
 
 }

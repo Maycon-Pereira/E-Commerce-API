@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.api.commerce.domain.produto.DadosAtualizacaoProduto;
@@ -82,5 +85,11 @@ public class ProdutoController {
 
 		return ResponseEntity.ok(response);
 	}
+	
+	@PostMapping("/upload-imagem")
+    public void uploadImagem(@RequestParam("id") String id,
+                             @RequestPart("imagem") MultipartFile imagem) throws Exception {
+		produtoService.upload(imagem, id);
+    }
 
 }

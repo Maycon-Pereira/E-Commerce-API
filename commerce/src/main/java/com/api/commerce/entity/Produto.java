@@ -2,6 +2,7 @@ package com.api.commerce.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,5 +27,8 @@ public class Produto {
 	private String description;
 	private String category_id;
 	private Boolean ativo;
+	
+	@Lob
+	private String imagem;
 
 }

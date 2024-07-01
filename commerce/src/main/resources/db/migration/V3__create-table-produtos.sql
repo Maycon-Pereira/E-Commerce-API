@@ -6,7 +6,7 @@ create table produtos (
     description text,
     category_id char(100) not null,
     ativo tinyint,
-    imagem text,
+    imagem mediumtext,
     
     primary key(id)
 );
