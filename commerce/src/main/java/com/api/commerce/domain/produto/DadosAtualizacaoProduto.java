@@ -1,6 +1,6 @@
 package com.api.commerce.domain.produto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record DadosAtualizacaoProduto(
 
@@ -8,10 +8,8 @@ public record DadosAtualizacaoProduto(
 		int quantity,
 		double price, 
 		String description,
-		@NotNull
-		String category_id,
-		@NotNull
-		String user_id
+		@NotBlank
+		String category_id
 		) {
 
 }

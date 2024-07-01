@@ -17,49 +17,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.api.commerce.domain.produto.DadosAtualizacaoProduto;
-import com.api.commerce.domain.produto.DadosCadastroProduto;
-import com.api.commerce.domain.produto.DadosDetalhamentoProduto;
-import com.api.commerce.domain.produto.DadosListagemProduto;
-import com.api.commerce.service.ProdutoService;
+import com.api.commerce.domain.pedido.DadosAtualizacaoPedido;
+import com.api.commerce.domain.pedido.DadosDetalhamentoPedido;
+import com.api.commerce.domain.pedido.DadosFazerPedido;
+import com.api.commerce.domain.pedido.DadosListagemPedido;
+import com.api.commerce.service.PedidoService;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("produtos")
-public class ProdutoController {
-
+@RequestMapping("pedidos")
+public class PedidoController {
+	
 	@Autowired
-	private ProdutoService produtoService;
-
+	private PedidoService pedidoService;
+	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<DadosDetalhamentoProduto> cadastrar(@RequestBody @Valid DadosCadastroProduto dados,
+	public ResponseEntity<DadosDetalhamentoPedido> fazerPedido(@RequestBody @Valid DadosFazerPedido dados,
 			UriComponentsBuilder uriBuilder) throws Exception {
+		
+		DadosDetalhamentoPedido dadosDetalhamentoPedido = pedidoService.fazerPedido(dados);
+		
+		var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(dadosDetalhamentoPedido.id()).toUri();
 
-		DadosDetalhamentoProduto dadosDetalhamentoProduto = produtoService.criarProduto(dados);
-
-		var uri = uriBuilder.path("/produtos/{id}").buildAndExpand(dadosDetalhamentoProduto.id()).toUri();
-
-		return ResponseEntity.created(uri).body(dadosDetalhamentoProduto);
+		return ResponseEntity.created(uri).body(dadosDetalhamentoPedido);
+		
 	}
-
+	
 	@GetMapping
-	public ResponseEntity<Page<DadosListagemProduto>> listar(
+	public ResponseEntity<Page<DadosListagemPedido>> listar(
 			@PageableDefault(size = 10, sort = { "name" }) Pageable paginacao) {
 
-		Page<DadosListagemProduto> response = produtoService.findAllByAtivoTrue(paginacao);
+		Page<DadosListagemPedido> response = pedidoService.findAllByAtivoTrue(paginacao);
 
 		return ResponseEntity.ok(response);
 	}
-
+	
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DadosDetalhamentoProduto> atualizar(@PathVariable String id, @RequestBody @Valid DadosAtualizacaoProduto dados)
+	public ResponseEntity<DadosDetalhamentoPedido> atualizar(@PathVariable String id, @RequestBody @Valid DadosAtualizacaoPedido dados)
 			throws Exception {
 
-		DadosDetalhamentoProduto response = produtoService.atualizarInformacoes(id, dados);
+		DadosDetalhamentoPedido response = pedidoService.atualizarInformacoes(id, dados);
 		if (response == null) {
 			throw new AccountNotFoundException("Id não encontrado na base");
 		}
@@ -68,19 +69,21 @@ public class ProdutoController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DadosListagemProduto> excluir(@PathVariable String id) throws Exception {
+	public ResponseEntity<DadosListagemPedido> excluir(@PathVariable String id) throws Exception {
 
-		produtoService.excluirProduto(id);
+		pedidoService.excluirPedido(id);
 
 		return ResponseEntity.noContent().build();
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<DadosDetalhamentoProduto> detalhar(@PathVariable String id) throws Exception {
+	public ResponseEntity<DadosDetalhamentoPedido> detalhar(@PathVariable String id) throws Exception {
 
-		DadosDetalhamentoProduto response = produtoService.detalharProduto(id);
+		DadosDetalhamentoPedido response = pedidoService.detalharPedido(id);
 
 		return ResponseEntity.ok(response);
 	}
+	
+	
 
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.api.commerce.domain.categoria.CategoriaRepository;
-import com.api.commerce.domain.categoria.CategoryProduct;
 import com.api.commerce.domain.categoria.DadosAtualizacaoCategoria;
 import com.api.commerce.domain.categoria.DadosCategorizarProduto;
 import com.api.commerce.domain.categoria.DadosDetalhamentoCategoria;
 import com.api.commerce.domain.categoria.DadosListagemCategoria;
-import com.api.commerce.domain.produto.DadosDetalhamentoProduto;
-import com.api.commerce.domain.produto.DadosListagemProduto;
-import com.api.commerce.domain.services.CategoriaService;
+import com.api.commerce.service.CategoriaService;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -37,9 +32,6 @@ public class CategoriaProdutoController {
 
 	@Autowired
 	private CategoriaService categoriaService;
-	
-	@Autowired
-	private CategoriaRepository repository;
 
 	@PostMapping
 	@Transactional
@@ -51,10 +43,6 @@ public class CategoriaProdutoController {
 
 		return ResponseEntity.created(uri).body(dadosDetalhamentoCategoria);
 	}
-	
-	
-	
-	
 
 	@GetMapping
 	public ResponseEntity<Page<DadosListagemCategoria>> listar(
@@ -78,29 +66,19 @@ public class CategoriaProdutoController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<DadosListagemCategoria> excluir(@PathVariable String id) {
+	public ResponseEntity<DadosListagemCategoria> excluir(@PathVariable String id) throws Exception {
 		
-		DadosListagemCategoria response = categoriaService.excluirCategoria(id);
-
+		categoriaService.excluirCategoria(id);
 
 		 return ResponseEntity.noContent().build();
 	}
 	
-	
-	
 	@GetMapping("/{id}")
-	public ResponseEntity<DadosDetalhamentoCategoria> detalhar(@PathVariable String id) {
+	public ResponseEntity<DadosDetalhamentoCategoria> detalhar(@PathVariable String id) throws Exception {
 		
 		DadosDetalhamentoCategoria response = categoriaService.detalharCategoria(id);
 		
 		return ResponseEntity.ok(response);
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 }

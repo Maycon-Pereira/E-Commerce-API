@@ -1,23 +1,25 @@
-package com.api.commerce.domain.services;
+package com.api.commerce.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.security.auth.login.AccountNotFoundException;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.api.commerce.domain.produto.DadosDetalhamentoProduto;
-import com.api.commerce.domain.produto.DadosListagemProduto;
-import com.api.commerce.domain.produto.Produto;
 import com.api.commerce.domain.usuario.DadosAtualizacaoUsuario;
 import com.api.commerce.domain.usuario.DadosCadastarUsuario;
 import com.api.commerce.domain.usuario.DadosDetalhamentoUsuario;
 import com.api.commerce.domain.usuario.DadosListagemUsuario;
-import com.api.commerce.domain.usuario.Usuario;
-import com.api.commerce.domain.usuario.UsuarioRepository;
+import com.api.commerce.entity.Usuario;
+import com.api.commerce.repository.UsuarioRepository;
 
 import jakarta.validation.Valid;
 
@@ -27,7 +29,7 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public DadosDetalhamentoUsuario categorizarProduto(@Valid DadosCadastarUsuario dadosUsuario) {
+	public DadosDetalhamentoUsuario criarUsuario(@Valid DadosCadastarUsuario dadosUsuario) {
 
 		var createdTime = LocalDateTime.now();
 		
@@ -53,10 +55,10 @@ public class UsuarioService {
 		return response;
 	}
 
-	public DadosDetalhamentoUsuario atualizarInformacoes(String id, @Valid DadosAtualizacaoUsuario dados) {
+	public DadosDetalhamentoUsuario atualizarInformacoes(String id, @Valid DadosAtualizacaoUsuario dados) throws Exception {
 		Optional<Usuario> procurado = usuarioRepository.findById(id);
 		if (!procurado.isPresent()) {
-			return null;
+			throw new AccountNotFoundException("Id do usuario não encontrado na base");
 		}
 		var updatedTime = LocalDateTime.now();
 		Usuario produto = procurado.get();
@@ -70,10 +72,10 @@ public class UsuarioService {
 		return new DadosDetalhamentoUsuario(saved);
 	}
 
-	public DadosListagemUsuario excluirUsuario(String id) {
+	public DadosListagemUsuario excluirUsuario(String id) throws Exception {
 		Optional<Usuario> procurado = usuarioRepository.findById(id);
 		if (!procurado.isPresent()) {
-			return null;
+			throw new AccountNotFoundException("Id do usuario não encontrado na base");
 		}
 		
 		Usuario usuario = procurado.get();
@@ -84,15 +86,37 @@ public class UsuarioService {
 		return new DadosListagemUsuario(saved);
 	}
 
-	public DadosDetalhamentoUsuario detalharUsuario(String id) {
+	public DadosDetalhamentoUsuario detalharUsuario(String id) throws Exception {
 		Optional<Usuario> procurado = usuarioRepository.findById(id);
 
         if (!procurado.isPresent()) {
-            return null;
+        	throw new AccountNotFoundException("Id do usuario não encontrado na base");
         }
 
         Usuario usuario = procurado.get();
         return new DadosDetalhamentoUsuario(usuario);
 	}
+
+	//IMAGEM UPLOAD E DOWNLOAD
+		public void upload(MultipartFile file, String id) throws Exception {
+			Optional<Usuario> procurado = usuarioRepository.findById(id);
+
+		    if (!procurado.isPresent()) {
+		        throw new RuntimeException("Usuario não encontrado");
+		    }
+		    Usuario usuario = procurado.get();
+
+		    // Convertendo o arquivo para uma string Base64
+		    byte[] imagemBytes = file.getBytes();
+		    String imagemBase64 = Base64.encodeBase64String(imagemBytes);
+		    usuario.setImagem(imagemBase64);
+
+		    // Salvando a entidade Usuario com a imagem em Base64
+		    usuarioRepository.save(usuario);
+		}
+
+		public List<Usuario> download() {
+		    return usuarioRepository.findAll();
+		}
 
 }

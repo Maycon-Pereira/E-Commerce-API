@@ -12,7 +12,8 @@ public record DadosCadastarUsuario(
 		@NotBlank
 		String username,
 		@NotBlank
-		String user_password, 
+		String user_password,
+		String imagem,
 		@NotBlank
 		@Email
 		String email, 

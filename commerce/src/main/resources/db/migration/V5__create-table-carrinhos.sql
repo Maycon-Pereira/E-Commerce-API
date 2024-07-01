@@ -1,0 +1,9 @@
+CREATE TABLE carrinhos (
+    id CHAR(100) NOT NULL,
+    usuario_id CHAR(100),
+    ativo TINYINT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);

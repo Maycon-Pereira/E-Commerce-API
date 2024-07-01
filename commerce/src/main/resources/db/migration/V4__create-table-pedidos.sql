@@ -1,14 +1,13 @@
-create table usuarios (
-
+create table pedidos (
     id char(100) not null,
-    username varchar(255) not null,
-    user_password varchar(255) not null,
-    email varchar(255) not null unique,
-    tipo varchar(100) not null,
+    product_id char(100) not null,
+    user_id char(100) not null,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    canceled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ativo tinyint,
-    imagem text,
-
+    
     primary key(id)
-)
+);
+
+

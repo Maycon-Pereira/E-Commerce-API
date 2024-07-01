@@ -13,10 +13,8 @@ public record DadosCadastroProduto(
 		double price,
 		@NotBlank
 		String description,
-		@NotNull
-		String category_id,
-		@NotNull
-		String user_id
+		@NotBlank
+		String category_id
 		
 		) {
 	

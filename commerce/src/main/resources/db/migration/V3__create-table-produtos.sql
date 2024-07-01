@@ -5,8 +5,8 @@ create table produtos (
     price double not null,
     description text,
     category_id char(100) not null,
-    user_id char(100) not null,
     ativo tinyint,
+    imagem text,
     
     primary key(id)
 );

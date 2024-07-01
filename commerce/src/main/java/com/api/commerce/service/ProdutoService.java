@@ -1,24 +1,23 @@
-package com.api.commerce.domain.services;
+package com.api.commerce.service;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.api.commerce.domain.categoria.CategoriaRepository;
-import com.api.commerce.domain.categoria.CategoryProduct;
-import com.api.commerce.domain.categoria.DadosDetalhamentoCategoria;
 import com.api.commerce.domain.produto.DadosAtualizacaoProduto;
 import com.api.commerce.domain.produto.DadosCadastroProduto;
 import com.api.commerce.domain.produto.DadosDetalhamentoProduto;
 import com.api.commerce.domain.produto.DadosListagemProduto;
-import com.api.commerce.domain.produto.Produto;
-import com.api.commerce.domain.produto.ProdutoRepository;
-import com.api.commerce.domain.usuario.Usuario;
-import com.api.commerce.domain.usuario.UsuarioRepository;
+import com.api.commerce.entity.CategoryProduct;
+import com.api.commerce.entity.Produto;
+import com.api.commerce.repository.CategoriaRepository;
+import com.api.commerce.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
@@ -27,26 +26,15 @@ public class ProdutoService {
 	private ProdutoRepository produtoRepository;
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-
-	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	public DadosDetalhamentoProduto categorizarProduto(DadosCadastroProduto dadosProduto) {
+	public DadosDetalhamentoProduto criarProduto(DadosCadastroProduto dadosProduto) throws Exception {
 
-		
-		
 		Optional<CategoryProduct> categoriaId = categoriaRepository.findById(dadosProduto.category_id());
-
-		Optional<Usuario> usuarioId = usuarioRepository.findById(dadosProduto.user_id());
 		
 		if (!categoriaId.isPresent()) {
-			return null;
+			throw new AccountNotFoundException("Id da categoria não encontrado na base");
 		}
-		if (!usuarioId.isPresent()) {
-			return null;
-		}
-		
 		
 		Produto produto = new Produto();
 
@@ -57,9 +45,7 @@ public class ProdutoService {
 		produto.setPrice(dadosProduto.price());
 		produto.setDescription(dadosProduto.description());
 		produto.setCategory_id(dadosProduto.category_id());
-		produto.setUser_id(dadosProduto.user_id());
 		produto.setAtivo(true);
-
 
 		Produto saved = produtoRepository.save(produto);
 
@@ -73,10 +59,10 @@ public class ProdutoService {
 		return response;
 	}
 
-	public DadosDetalhamentoProduto atualizarInformacoes(String id, DadosAtualizacaoProduto dadosProduto) {
+	public DadosDetalhamentoProduto atualizarInformacoes(String id, DadosAtualizacaoProduto dadosProduto) throws Exception {
 		Optional<Produto> procurado = produtoRepository.findById(id);
 		if (!procurado.isPresent()) {
-			return null;
+			throw new AccountNotFoundException("Id do produto não encontrado na base");
 		}
 
 		Produto produto = procurado.get();
@@ -86,17 +72,16 @@ public class ProdutoService {
 		produto.setDescription(dadosProduto.description());
 
 		produto.setCategory_id(dadosProduto.category_id());
-		produto.setUser_id(dadosProduto.user_id());
 
 		Produto saved = produtoRepository.save(produto);
 
 		return new DadosDetalhamentoProduto(saved);
 	}
 
-	public DadosListagemProduto excluirProduto(String id) {
+	public DadosListagemProduto excluirProduto(String id) throws Exception {
 		Optional<Produto> procurado = produtoRepository.findById(id);
 		if (!procurado.isPresent()) {
-			return null;
+			throw new AccountNotFoundException("Id do produto não encontrado na base");
 		}
 		
 		Produto produto = procurado.get();
@@ -107,16 +92,15 @@ public class ProdutoService {
 		return new DadosListagemProduto(saved);
 	}
 
-	public DadosDetalhamentoProduto detalharProduto(String id) {
+	public DadosDetalhamentoProduto detalharProduto(String id) throws Exception {
 		Optional<Produto> procurado = produtoRepository.findById(id);
 
         if (!procurado.isPresent()) {
-            return null;
+        	throw new AccountNotFoundException("Id do produto não encontrado na base");
         }
 
         Produto produto = procurado.get();
         return new DadosDetalhamentoProduto(produto);
 	}
-
 
 }
