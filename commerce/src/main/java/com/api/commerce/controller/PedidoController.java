@@ -48,7 +48,7 @@ public class PedidoController {
 	
 	@GetMapping
 	public ResponseEntity<Page<DadosListagemPedido>> listar(
-			@PageableDefault(size = 10, sort = { "name" }) Pageable paginacao) {
+			@PageableDefault(size = 10) Pageable paginacao) {
 
 		Page<DadosListagemPedido> response = pedidoService.findAllByAtivoTrue(paginacao);
 
