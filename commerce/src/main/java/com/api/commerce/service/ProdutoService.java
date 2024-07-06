@@ -114,12 +114,10 @@ public class ProdutoService {
 		    }
 		    Produto produto = procurado.get();
 
-		    // Convertendo o arquivo para uma string Base64
 		    byte[] imagemBytes = file.getBytes();
 		    String imagemBase64 = Base64.encodeBase64String(imagemBytes);
 		    produto.setImagem(imagemBase64);
 
-		    // Salvando a entidade Usuario com a imagem em Base64
 		    produtoRepository.save(produto);
 		}	
 

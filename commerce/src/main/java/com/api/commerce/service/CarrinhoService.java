@@ -11,12 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.api.commerce.domain.carrinho.DadosAtualizacaoCarrinho;
-import com.api.commerce.domain.carrinho.DadosCadastroCarrinho;
 import com.api.commerce.domain.carrinho.DadosDetalhamentoCarrinho;
 import com.api.commerce.domain.carrinho.DadosListagemCarrinho;
 import com.api.commerce.entity.Carrinho;
-import com.api.commerce.entity.Pedido;
-import com.api.commerce.entity.Produto;
 import com.api.commerce.repository.CarrinhoRepository;
 import com.api.commerce.repository.PedidoRepository;
 import com.api.commerce.repository.ProdutoRepository;
@@ -35,30 +32,30 @@ public class CarrinhoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
-	public DadosDetalhamentoCarrinho criarCarrinho(DadosCadastroCarrinho dadosCarrinho) throws Exception {
-
-	    Optional<Carrinho> userId = carrinhoRepository.findById(dadosCarrinho.user_id());
-	    Optional<Pedido> pedidoUserId = pedidoRepository.findByUserId(dadosCarrinho.user_id());
-
-	    if (!userId.isPresent() && !pedidoUserId.isPresent()) {
-	        throw new AccountNotFoundException("Id do usuário não encontrado na base");
-	    }
-	    if (!userId.get().getId().equals(pedidoUserId.get().getUser_id())) {
-	        throw new AccountNotFoundException("Id do usuário incorreto");
-	    }
-
-	    Pedido pedidoAll = pedidoUserId.get();
-	    Optional<Produto> produtoOptional = produtoRepository.findById(pedidoAll.getProduct_id());
-
-	    if (!produtoOptional.isPresent()) {
-	        throw new AccountNotFoundException("Produto não encontrado na base");
-	    }
-
-
-
-	    
-	    return new DadosDetalhamentoCarrinho(null);
-	}
+//	public DadosDetalhamentoCarrinho criarCarrinho(DadosCadastroCarrinho dadosCarrinho) throws Exception {
+//
+//	    Optional<Carrinho> userId = carrinhoRepository.findById(dadosCarrinho.user_id());
+//	    Optional<Pedido> pedidoUserId = pedidoRepository.findByUserId(dadosCarrinho.user_id());
+//
+//	    if (!userId.isPresent() && !pedidoUserId.isPresent()) {
+//	        throw new AccountNotFoundException("Id do usuário não encontrado na base");
+//	    }
+//	    if (!userId.get().getId().equals(pedidoUserId.get().getUser_id())) {
+//	        throw new AccountNotFoundException("Id do usuário incorreto");
+//	    }
+//
+//	    Pedido pedidoAll = pedidoUserId.get();
+//	    Optional<Produto> produtoOptional = produtoRepository.findById(pedidoAll.getProduct_id());
+//
+//	    if (!produtoOptional.isPresent()) {
+//	        throw new AccountNotFoundException("Produto não encontrado na base");
+//	    }
+//
+//
+//
+//	    
+//	    return new DadosDetalhamentoCarrinho(null);
+//	}
 
 
 	

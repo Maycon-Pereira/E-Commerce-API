@@ -1,8 +1,6 @@
 package com.api.commerce.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,67 +39,71 @@ public class PedidoService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private CarrinhoRepository carrinhoRepository;
-	
+
 	@Autowired
 	private ItemRepository itemRepository;
 
-
-
 	public DadosDetalhamentoPedido fazerPedido(@Valid DadosFazerPedido dados) throws Exception {
-	    Optional<Produto> produtoId = produtoRepository.findById(dados.product_id());
-	    if (!produtoId.isPresent()) {
-	        throw new AccountNotFoundException("Id do produto não encontrado na base");
-	    }
-	    Optional<Usuario> usuarioId = usuarioRepository.findById(dados.user_id());
-	    if (!usuarioId.isPresent()) {
-	        throw new AccountNotFoundException("Id do usuário não encontrado na base");
-	    }
-	    Produto produto = produtoId.get();
+		Optional<Produto> produtoId = produtoRepository.findById(dados.product_id());
+		if (!produtoId.isPresent()) {
+			throw new AccountNotFoundException("Id do produto não encontrado na base");
+		}
+		Optional<Usuario> usuarioId = usuarioRepository.findById(dados.user_id());
+		if (!usuarioId.isPresent()) {
+			throw new AccountNotFoundException("Id do usuário não encontrado na base");
+		}
+		Produto produto = produtoId.get();
 
-	    var createdTime = LocalDateTime.now();
+		var createdTime = LocalDateTime.now();
 
-	    Pedido pedido = new Pedido();
-	    pedido.setId(UUID.randomUUID().toString());
-	    pedido.setProduct_id(dados.product_id());
-	    pedido.setUser_id(dados.user_id());
-	    pedido.setCreated_at(createdTime);
-	    pedido.setAtivo(true);
+		Pedido pedido = new Pedido();
+		pedido.setId(UUID.randomUUID().toString());
+		pedido.setProduct_id(dados.product_id());
+		pedido.setUser_id(dados.user_id());
+		pedido.setCreated_at(createdTime);
+		pedido.setAtivo(true);
 
-	    Carrinho carrinho = new Carrinho();
-	    carrinho.setId(UUID.randomUUID().toString());
-	    carrinho.setCreated_at(createdTime);
-	    carrinho.setUser_id(dados.user_id());
-	    carrinho.setAtivo(true);
+        Optional<Carrinho> carrinhoExistente = carrinhoRepository.findByUserIdAndAtivoTrue(dados.user_id());
 
-	    // Cria um item a partir do produto
-	    Item item = new Item();
-	    item.setId(UUID.randomUUID().toString());
-	    item.setName(produto.getName());
-	    item.setProduct_id(dados.product_id());
-	    item.setQuantity(produto.getQuantity()); // Define a quantidade do pedido
-	    item.setPrice(produto.getPrice());
-	    item.setDescription(produto.getDescription());
-	    item.setCategory_id(produto.getCategory_id());
-	    item.setAtivo(produto.getAtivo());
-	    item.setImagem(produto.getImagem());
-	    item.setCarrinho_id(carrinho.getId()); // Associa o item ao carrinho
+        Carrinho carrinho;
+        if (carrinhoExistente.isPresent()) {
+        	
+            carrinho = carrinhoExistente.get();
+        } else {
+        	
+            carrinho = new Carrinho();
+            carrinho.setId(UUID.randomUUID().toString());
+            carrinho.setCreated_at(createdTime);
+            carrinho.setUser_id(dados.user_id());
+            carrinho.setAtivo(true);
+            carrinhoRepository.save(carrinho);
+        }
 
-	    List<Item> items = new ArrayList<>();
-	    items.add(item);
-	    carrinho.setItems(items);
+		Item item = new Item();
+		item.setId(UUID.randomUUID().toString());
+		item.setName(produto.getName());
+		item.setProduct_id(dados.product_id());
+		item.setQuantity(produto.getQuantity()); // Define a quantidade do pedido
+		item.setPrice(produto.getPrice());
+		item.setDescription(produto.getDescription());
+		item.setCategory_id(produto.getCategory_id());
+		item.setAtivo(produto.getAtivo());
+		item.setImagem(produto.getImagem());
+		item.setCarrinho_id(carrinho.getId()); // Associa o item ao carrinho
 
-	    carrinhoRepository.save(carrinho);
-	    
-	    itemRepository.save(item);
+//	    List<Item> items = new ArrayList<>();
+//	    items.add(item);
+//	    carrinho.setItems(items);
 
-	    Pedido saved = pedidoRepository.save(pedido);
+		itemRepository.save(item);
 
-	    return new DadosDetalhamentoPedido(saved);
+		Pedido saved = pedidoRepository.save(pedido);
+
+		return new DadosDetalhamentoPedido(saved);
 	}
-
 
 	public Page<DadosListagemPedido> findAllByAtivoTrue(Pageable paginacao) {
 		Page<DadosListagemPedido> response = pedidoRepository.findAllByAtivoTrue(paginacao)
