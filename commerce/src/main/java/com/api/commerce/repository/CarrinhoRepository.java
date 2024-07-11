@@ -15,7 +15,7 @@ public interface CarrinhoRepository extends JpaRepository<Carrinho, String>{
 	Page<Carrinho> findAllByAtivoTrue(Pageable paginacao);
 
 	@Query("""
-			SELECT c FROM carrinho c 
+			SELECT c FROM Carrinho c 
 			WHERE 
 			c.user_id = :user_id 
 			AND 

@@ -1,8 +1,11 @@
 package com.api.commerce.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.AccountNotFoundException;
 
@@ -19,6 +22,7 @@ import com.api.commerce.entity.Carrinho;
 import com.api.commerce.entity.Item;
 import com.api.commerce.entity.Pedido;
 import com.api.commerce.entity.Produto;
+import com.api.commerce.entity.ProdutoImagem;
 import com.api.commerce.entity.Usuario;
 import com.api.commerce.repository.CarrinhoRepository;
 import com.api.commerce.repository.ItemRepository;
@@ -91,12 +95,13 @@ public class PedidoService {
 		item.setDescription(produto.getDescription());
 		item.setCategory_id(produto.getCategory_id());
 		item.setAtivo(produto.getAtivo());
-		item.setImagem(produto.getImagem());
-		item.setCarrinho_id(carrinho.getId()); // Associa o item ao carrinho
-
-//	    List<Item> items = new ArrayList<>();
-//	    items.add(item);
-//	    carrinho.setItems(items);
+		
+		List<String> imagensBase64 = produto.getImagens() != null 
+	            ? produto.getImagens().stream().map(ProdutoImagem::getImagem).collect(Collectors.toList()) 
+	            : new ArrayList<>();
+	        item.setImagens(imagensBase64);
+	        
+		item.setCarrinho_id(carrinho.getId());
 
 		itemRepository.save(item);
 

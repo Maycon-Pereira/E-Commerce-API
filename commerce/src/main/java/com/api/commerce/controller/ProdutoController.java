@@ -88,7 +88,7 @@ public class ProdutoController {
 	
 	@PostMapping("/upload-imagem")
     public void uploadImagem(@RequestParam("id") String id,
-                             @RequestPart("imagem") MultipartFile imagem) throws Exception {
+                             @RequestPart("imagem") MultipartFile[] imagem) throws Exception {
 		produtoService.upload(imagem, id);
     }
 

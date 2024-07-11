@@ -1,10 +1,11 @@
 package com.api.commerce.entity;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,5 +35,7 @@ public class Item {
 	private String product_id;
 	private Boolean ativo;
 
-	private String imagem;
+	@ElementCollection
+    @Lob
+    private List<String> imagens;
 }

@@ -15,8 +15,6 @@ import com.api.commerce.domain.carrinho.DadosDetalhamentoCarrinho;
 import com.api.commerce.domain.carrinho.DadosListagemCarrinho;
 import com.api.commerce.entity.Carrinho;
 import com.api.commerce.repository.CarrinhoRepository;
-import com.api.commerce.repository.PedidoRepository;
-import com.api.commerce.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
 
@@ -26,11 +24,11 @@ public class CarrinhoService {
 	@Autowired
 	private CarrinhoRepository carrinhoRepository;
 
-	@Autowired
-	private PedidoRepository pedidoRepository;
+//	@Autowired
+//	private PedidoRepository pedidoRepository;
 	
-	@Autowired
-	private ProdutoRepository produtoRepository;
+//	@Autowired
+//	private ProdutoRepository produtoRepository;
 
 //	public DadosDetalhamentoCarrinho criarCarrinho(DadosCadastroCarrinho dadosCarrinho) throws Exception {
 //

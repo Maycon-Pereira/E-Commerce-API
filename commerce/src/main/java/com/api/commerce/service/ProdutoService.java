@@ -18,6 +18,7 @@ import com.api.commerce.domain.produto.DadosDetalhamentoProduto;
 import com.api.commerce.domain.produto.DadosListagemProduto;
 import com.api.commerce.entity.CategoryProduct;
 import com.api.commerce.entity.Produto;
+import com.api.commerce.entity.ProdutoImagem;
 import com.api.commerce.repository.CategoriaRepository;
 import com.api.commerce.repository.ProdutoRepository;
 
@@ -106,19 +107,23 @@ public class ProdutoService {
 	}
 
 	//IMAGEM UPLOAD E DOWNLOAD
-		public void upload(MultipartFile file, String id) throws Exception {
-			Optional<Produto> procurado = produtoRepository.findById(id);
+	 public void upload(MultipartFile[] files, String id) throws Exception {
+	        Optional<Produto> produtoOptional = produtoRepository.findById(id);
+	        if (produtoOptional.isEmpty()) {
+	            throw new RuntimeException("Produto não encontrado");
+	        }
 
-		    if (!procurado.isPresent()) {
-		        throw new RuntimeException("Usuario não encontrado");
-		    }
-		    Produto produto = procurado.get();
+	        Produto produto = produtoOptional.get();
 
-		    byte[] imagemBytes = file.getBytes();
-		    String imagemBase64 = Base64.encodeBase64String(imagemBytes);
-		    produto.setImagem(imagemBase64);
+	        for (MultipartFile file : files) {
+	            ProdutoImagem produtoImagem = new ProdutoImagem();
+	            produtoImagem.setId(UUID.randomUUID().toString());
+	            produtoImagem.setImagem(Base64.encodeBase64String(file.getBytes()));
+	            produto.addImagem(produtoImagem);
+	        }
 
-		    produtoRepository.save(produto);
-		}	
+	        produtoRepository.save(produto);
+	    }
+
 
 }

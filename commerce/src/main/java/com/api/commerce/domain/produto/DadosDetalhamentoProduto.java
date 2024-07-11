@@ -1,11 +1,16 @@
 package com.api.commerce.domain.produto;
 
-import com.api.commerce.entity.Produto;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public record DadosDetalhamentoProduto(String id, String name, int quantity, double price, String description, String category_id, String imagem) {
+import com.api.commerce.entity.Produto;
+import com.api.commerce.entity.ProdutoImagem;
+
+public record DadosDetalhamentoProduto(String id, String name, int quantity, double price, String description, String category_id, List<String> imagem) {
 
 	public DadosDetalhamentoProduto(Produto produto) {
-		this(produto.getId(), produto.getName(), produto.getQuantity(), produto.getPrice(), produto.getDescription(), produto.getCategory_id(), produto.getImagem());
+		this(produto.getId(), produto.getName(), produto.getQuantity(), produto.getPrice(), produto.getDescription(), produto.getCategory_id(),
+	             produto.getImagens().stream().map(ProdutoImagem::getImagem).collect(Collectors.toList()));
 	}
 	
 }
