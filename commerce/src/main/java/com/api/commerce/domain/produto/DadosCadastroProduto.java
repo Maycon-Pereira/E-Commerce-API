@@ -11,6 +11,9 @@ public record DadosCadastroProduto(
 		int quantity,
 		@NotNull
 		double price,
+		String color,
+		String size,
+		String discount,
 		@NotBlank
 		String description,
 		@NotBlank

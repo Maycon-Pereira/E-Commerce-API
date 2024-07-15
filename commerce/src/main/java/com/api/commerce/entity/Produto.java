@@ -28,6 +28,9 @@ public class Produto {
 	private String name;
 	private int quantity;
 	private double price;
+	private String color;
+	private String size;
+	private String discount;
 	private String description;
 	private String category_id;
 	private Boolean ativo;

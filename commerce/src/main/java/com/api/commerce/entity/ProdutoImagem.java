@@ -2,6 +2,7 @@ package com.api.commerce.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -24,6 +25,7 @@ public class ProdutoImagem {
     private String id;
 
     @ManyToOne
+    @JoinColumn(name = "produto_id")
     private Produto produto;
 
     @Lob
