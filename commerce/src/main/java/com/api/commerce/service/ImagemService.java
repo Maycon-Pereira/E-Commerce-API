@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class ImagemService {
 			ProdutoImagem produtoImagem = new ProdutoImagem();
 			produtoImagem.setId(UUID.randomUUID().toString());
 			produtoImagem.setImagem(Base64.encodeBase64String(file.getBytes()));
+			produtoImagem.setAtivo(true);
 			produto.addImagem(produtoImagem);
 		}
 
@@ -47,8 +50,22 @@ public class ImagemService {
 	public List<DadosDetalhamentoImagens> listarImagens() {
 		List<ProdutoImagem> imagens = imagemRepository.findAll();
 		return imagens.stream().map(
-				imagem -> new DadosDetalhamentoImagens(imagem.getId(), imagem.getProduto().getId(), imagem.getImagem()))
+				imagem -> new DadosDetalhamentoImagens(imagem.getId(), imagem.getProduto().getId(), imagem.getAtivo(), imagem.getImagem()))
 				.collect(Collectors.toList());
+	}
+
+	public DadosDetalhamentoImagens excluirImagem(String id) throws Exception {
+		Optional<ProdutoImagem> procurado = imagemRepository.findById(id);
+		if (!procurado.isPresent()) {
+			throw new AccountNotFoundException("Id da imagem não encontrado na base");
+		}
+		
+		ProdutoImagem imagem = procurado.get();
+		imagem.setAtivo(false);
+		
+		ProdutoImagem saved = imagemRepository.save(imagem);
+		
+		return new DadosDetalhamentoImagens(saved);
 	}
 
 }

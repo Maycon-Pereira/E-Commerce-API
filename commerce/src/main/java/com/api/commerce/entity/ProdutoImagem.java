@@ -27,6 +27,7 @@ public class ProdutoImagem {
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
+    private Boolean ativo;
 
     @Lob
     private String imagem;
