@@ -23,8 +23,7 @@ public class TokenService {
 		System.out.println(secret);
 		try {
 			var algoritmo = Algorithm.HMAC256(secret);
-			System.out.println("token 1");
-			return JWT.create().withIssuer("API Voll.med").withSubject(usuario.getUsername())
+			return JWT.create().withIssuer("API E.commerce").withSubject(usuario.getEmail())
 					.withExpiresAt(dataExpiracao()).sign(algoritmo);
 		} catch (JWTCreationException exception) {
 			throw new RuntimeException("erro ao gerrar token jwt", exception);
@@ -34,9 +33,8 @@ public class TokenService {
 	public String getSubject(String tokenJWT) {
 		try {
 			var algoritmo = Algorithm.HMAC256(secret);
-			System.out.println("token 2");
 			return JWT.require(algoritmo)
-					.withIssuer("API Voll.med")
+					.withIssuer("API E.commerce")
 					.build()
 					.verify(tokenJWT)
 					.getSubject();
@@ -47,7 +45,7 @@ public class TokenService {
 	}
 
 	private Instant dataExpiracao() {
-		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+		return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"));
 	}
 
 }
