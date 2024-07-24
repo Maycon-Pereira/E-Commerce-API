@@ -1,5 +1,6 @@
 package com.api.commerce.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +36,7 @@ public class ProdutoService {
 		if (!categoriaId.isPresent()) {
 			throw new AccountNotFoundException("Id da categoria não encontrado na base");
 		}
+		var createdTime = LocalDateTime.now();
 		
 		Produto produto = new Produto();
 
@@ -46,8 +48,10 @@ public class ProdutoService {
 		produto.setColor(dadosProduto.color());
 		produto.setSize(dadosProduto.size());
 		produto.setDiscount(dadosProduto.discount());
+		produto.setRating(dadosProduto.rating());
 		produto.setDescription(dadosProduto.description());
 		produto.setCategory_id(dadosProduto.category_id());
+		produto.setCreated_at(createdTime);
 		produto.setAtivo(true);
 
 		Produto saved = produtoRepository.save(produto);
@@ -67,7 +71,8 @@ public class ProdutoService {
 		if (!procurado.isPresent()) {
 			throw new AccountNotFoundException("Id do produto não encontrado na base");
 		}
-
+		var updatedTime = LocalDateTime.now();
+		
 		Produto produto = procurado.get();
 		produto.setName(dadosProduto.name());
 		produto.setQuantity(dadosProduto.quantity());
@@ -75,8 +80,9 @@ public class ProdutoService {
 		produto.setColor(dadosProduto.color());
 		produto.setSize(dadosProduto.size());
 		produto.setDiscount(dadosProduto.discount());
+		produto.setRating(dadosProduto.rating());
 		produto.setDescription(dadosProduto.description());
-
+		produto.setUpdated_at(updatedTime);
 		produto.setCategory_id(dadosProduto.category_id());
 
 		Produto saved = produtoRepository.save(produto);
@@ -90,8 +96,11 @@ public class ProdutoService {
 			throw new AccountNotFoundException("Id do produto não encontrado na base");
 		}
 		
+		var canceledTime = LocalDateTime.now();
+		
 		Produto produto = procurado.get();
 		produto.setAtivo(false);
+		produto.setUpdated_at(canceledTime);
 		
 		Produto saved = produtoRepository.save(produto);
 		

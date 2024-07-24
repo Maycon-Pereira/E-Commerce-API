@@ -47,7 +47,7 @@ public class ProdutoController {
 
 	@GetMapping
 	public ResponseEntity<Page<DadosListagemProduto>> listar(
-			@PageableDefault(size = 10, sort = { "name" }) Pageable paginacao) {
+			@PageableDefault(size = 20, sort = { "name" }) Pageable paginacao) {
 
 		Page<DadosListagemProduto> response = produtoService.findAllByAtivoTrue(paginacao);
 

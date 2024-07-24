@@ -60,13 +60,13 @@ public class UsuarioService {
 			throw new AccountNotFoundException("Id do usuario não encontrado na base");
 		}
 		var updatedTime = LocalDateTime.now();
-		Usuario produto = procurado.get();
-		produto.setUsername(dados.username());
-		produto.setUser_password(dados.user_password());
-		produto.setEmail(dados.email());
-		produto.setUpdated_at(updatedTime);
+		Usuario user = procurado.get();
+		user.setUsername(dados.username());
+		user.setUser_password(dados.user_password());
+		user.setEmail(dados.email());
+		user.setUpdated_at(updatedTime);
 
-		Usuario saved = usuarioRepository.save(produto);
+		Usuario saved = usuarioRepository.save(user);
 
 		return new DadosDetalhamentoUsuario(saved);
 	}

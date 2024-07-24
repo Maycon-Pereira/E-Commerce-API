@@ -1,5 +1,8 @@
 package com.api.commerce.domain.produto;
 
+import java.time.LocalDateTime;
+
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,10 +17,13 @@ public record DadosCadastroProduto(
 		String color,
 		String size,
 		String discount,
+		int rating,
 		@NotBlank
 		String description,
 		@NotBlank
-		String category_id
+		String category_id,
+		@Future
+		LocalDateTime created_at
 		
 		) {
 	

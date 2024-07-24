@@ -1,5 +1,6 @@
 package com.api.commerce.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,14 @@ public class Produto {
 	private String color;
 	private String size;
 	private String discount;
+	private int rating;
 	private String description;
 	private String category_id;
 	private Boolean ativo;
+	
+	private LocalDateTime created_at;
+	private LocalDateTime updated_at;
+	private LocalDateTime canceled_at;
 	
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdutoImagem> imagens = new ArrayList<>();
