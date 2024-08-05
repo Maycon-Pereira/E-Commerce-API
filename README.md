@@ -2,13 +2,6 @@
 
 Esta é uma API de e-commerce desenvolvida em Java, utilizando Spring Boot. A API permite operações CRUD (Create, Read, Update, Delete) para usuários, produtos, categorias e pedidos.
 
-## Índice
-
-- [Funcionalidades](#funcionalidades)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Como Rodar o Projeto](#como-rodar-o-projeto)
-- [Contribuição](#contribuicao)
-
 ## Funcionalidades 🛠️
 
 - **Usuários:** CRUD completo para gerenciar usuários, incluindo registro sem autenticação. 👤
