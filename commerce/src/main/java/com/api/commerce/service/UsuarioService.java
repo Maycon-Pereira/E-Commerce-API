@@ -17,7 +17,6 @@ import com.api.commerce.domain.usuario.DadosAtualizacaoUsuario;
 import com.api.commerce.domain.usuario.DadosCadastarUsuario;
 import com.api.commerce.domain.usuario.DadosDetalhamentoUsuario;
 import com.api.commerce.domain.usuario.DadosListagemUsuario;
-import com.api.commerce.domain.usuario.Tipo;
 import com.api.commerce.entity.Usuario;
 import com.api.commerce.repository.UsuarioRepository;
 
