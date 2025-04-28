@@ -1,5 +1,7 @@
 package com.api.commerce.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,9 @@ import lombok.Setter;
 public class CategoryProduct {
 
 	@Id
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(columnDefinition = "VARCHAR(36)")
 	private String id;
 	@Column(name="categoryname")
     private String categoryName;

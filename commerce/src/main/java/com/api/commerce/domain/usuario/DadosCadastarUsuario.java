@@ -19,7 +19,7 @@ public record DadosCadastarUsuario(
 		String email, 
 		@NotNull
 		Tipo tipo,
-		@Future
+		
 		LocalDateTime created_at, 
 		
 		LocalDateTime updated_at) {

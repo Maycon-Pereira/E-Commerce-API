@@ -64,7 +64,7 @@ public class PedidoService {
 		var createdTime = LocalDateTime.now();
 
 		Pedido pedido = new Pedido();
-		pedido.setId(UUID.randomUUID().toString());
+		//pedido.setId(UUID.randomUUID().toString());
 		pedido.setProduct_id(dados.product_id());
 		pedido.setUser_id(dados.user_id());
 		pedido.setCreated_at(createdTime);

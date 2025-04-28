@@ -29,7 +29,7 @@ public class CategoriaService {
 		
 		CategoryProduct categoria = new CategoryProduct();
 		
-		categoria.setId(UUID.randomUUID().toString());
+		//categoria.setId(UUID.randomUUID().toString());
 		categoria.setCategoryName(dadosCategoria.categoryName());
 		categoria.setAtivo(true);
 

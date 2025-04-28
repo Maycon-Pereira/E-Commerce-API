@@ -10,6 +10,7 @@ CREATE TABLE carrinho_item (
     ativo tinyint,
     imagem mediumtext,
     primary key(id),
-    FOREIGN KEY (carrinho_id) REFERENCES carrinho(id),
-    index (carrinho_id)
+    FOREIGN KEY (carrinho_id) REFERENCES carrinho(id)
 );
+
+CREATE INDEX idx_carrinho_item_id ON carrinho_item (carrinho_id);

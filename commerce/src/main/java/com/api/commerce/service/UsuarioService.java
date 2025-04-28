@@ -34,7 +34,7 @@ public class UsuarioService {
 		
 		Usuario usuario = new Usuario();
 
-		usuario.setId(UUID.randomUUID().toString());
+		//usuario.setId(UUID.randomUUID().toString());
 
 		usuario.setUsername(dadosUsuario.username());
 		usuario.setUser_password(dadosUsuario.user_password());

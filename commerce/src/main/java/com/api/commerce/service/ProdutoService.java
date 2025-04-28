@@ -40,7 +40,7 @@ public class ProdutoService {
 		
 		Produto produto = new Produto();
 
-		produto.setId(UUID.randomUUID().toString());
+		//produto.setId(UUID.randomUUID().toString());
 
 		produto.setName(dadosProduto.name());
 		produto.setQuantity(dadosProduto.quantity());

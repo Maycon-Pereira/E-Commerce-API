@@ -4,6 +4,7 @@ CREATE TABLE carrinho (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     ativo tinyint,
     user_id char(100) not null,
-    primary key (id),
-    index (id)
+    primary key (id)
 );
+
+CREATE INDEX idx_carrinho_id ON carrinho (id);

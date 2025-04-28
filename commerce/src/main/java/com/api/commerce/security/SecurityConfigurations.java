@@ -1,5 +1,7 @@
 package com.api.commerce.security;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +26,13 @@ public class SecurityConfigurations {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				//liberar acesso ao h2-console
+				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 				.authorizeHttpRequests(req -> {
+					//liberar acesso ao h2-console
+					req.requestMatchers(toH2Console()).permitAll();
+					req.requestMatchers("/h2-console/**").permitAll();
+					
 					req.requestMatchers("/login").permitAll();
 					req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
 					req.anyRequest().authenticated();
